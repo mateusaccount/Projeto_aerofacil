@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Viagens</title>
+</head>
+<body>
+    <h1>Lista de Viagens</h1>
+    <a href="{% url 'viagem_create' %}">Nova Viagem</a>
+    <ul>
+        {% for viagem in object_list %}
+            <li>
+                {{ viagem.piloto }} - {{ viagem.origem }} para {{ viagem.destino }} em {{ viagem.data_viagem }}
+                <a href="{% url 'viagem_update' viagem.pk %}">Editar</a>
+                <a href="{% url 'viagem_delete' viagem.pk %}">Excluir</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

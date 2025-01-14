@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Excluir Viagem</title>
+</head>
+<body>
+    <h1>Tem certeza que deseja excluir esta viagem?</h1>
+    <p>{{ object }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirmar</button>
+    </form>
+    <a href="{% url 'viagem_list' %}">Cancelar</a>
+</body>
+</html>
