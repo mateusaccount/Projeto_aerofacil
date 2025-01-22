@@ -1,14 +1,32 @@
-<form method="POST" action="{% url 'login' %}">
+{% load static %}
+{% load crispy_forms_filters %}
+
+<form method="POST" action="{% url 'login' %}" class="login-form">
     {% csrf_token %}
-    <h2>Login</h2>
+    <h2 class="text-center">Login</h2>
+    {{ form | crispy }}
+    <!-- mensagem de erro -->
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>Erro:</strong> Usuário ou senha inválidos. Tente novamente.
+        </div>
+    {% endif %}
+
     <div class="form-group">
         <label for="username">Usuário</label>
-        <input type="text" id="username" name="username" class="form-control" required>
+        <input type="text" id="username" name="username" class="form-control" 
+               placeholder="Digite seu usuário" required aria-label="Usuário" autocomplete="username">
     </div>
+
     <div class="form-group">
         <label for="password">Senha</label>
-        <input type="password" id="password" name="password" class="form-control" required>
+        <input type="password" id="password" name="password" class="form-control" 
+               placeholder="Digite sua senha" required aria-label="Senha" autocomplete="current-password">
     </div>
-    <button type="submit" class="btn btn-primary">Entrar</button>
+
+    <button type="submit" class="btn btn-primary btn-block">Entrar</button>
 </form>
-<p>Não tem uma conta? <a href="{% url 'signup' %}">Cadastre-se aqui</a>.</p>
+
+<p class="text-center mt-3">
+    Não tem uma conta? <a href="{% url 'signup' %}">Cadastre-se aqui</a>.
+</p>

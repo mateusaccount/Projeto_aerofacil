@@ -1,15 +1,27 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Excluir Viagem</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
-    <h1>Tem certeza que deseja excluir esta viagem?</h1>
-    <p>{{ object }}</p>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Confirmar</button>
-    </form>
-    <a href="{% url 'viagem_list' %}">Cancelar</a>
+<body class="container mt-5">
+    <div class="card shadow-sm p-4">
+        <h2 class="text-center text-danger">Excluir Viagem</h2>
+        <p class="text-center">Tem certeza de que deseja excluir a viagem:</p>
+        
+        <div class="alert alert-warning text-center">
+            <strong>{{ object }}</strong>
+        </div>
+
+        <form method="post" class="text-center">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+            <a href="{% url 'viagem_list' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
 </body>
 </html>

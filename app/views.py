@@ -1,46 +1,82 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect, get_object_or_404
+from django.forms.models import model_to_dict
 from .models import Viagem
-from django.shortcuts import render, redirect
+from .forms import ViagemForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
-from django.contrib import messages
 
-class ViagemListView(LoginRequiredMixin, ListView):
-    model = Viagem
-    template_name = 'viagem_list.html'
-    login_url = 'login'
+@login_required
+def viagem_list(request):
+    context = {
+        "viagens": Viagem.objects.all()
+    }
+    return render(request, "viagem_list.html", context)
 
-class ViagemCreateView(LoginRequiredMixin, CreateView):
-    model = Viagem
-    fields = ['piloto', 'origem', 'destino', 'data_viagem', 'descricao']
-    template_name = 'viagem_form.html'
-    success_url = reverse_lazy('viagem_list')
-    login_url = 'login'
+def viagem_detail(request, viagem_id):
+    context = {
+        "viagem": get_object_or_404(Viagem, pk=viagem_id)
+    }
+    return render(request, "viagem_detail.html", context)
 
-class ViagemUpdateView(LoginRequiredMixin, UpdateView):
-    model = Viagem
-    fields = ['piloto', 'origem', 'destino', 'data_viagem', 'descricao']
-    template_name = 'viagem_form.html'
-    success_url = reverse_lazy('viagem_list')
-    login_url = 'login'
+@login_required
+def viagem_create(request):
+    if request.method == "POST":
+        form = ViagemForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('viagem_list')
+    else:
+        form = ViagemForm()
+    return render(request, "viagem_form.html", {"form": form})
 
-class ViagemDeleteView(LoginRequiredMixin, DeleteView):
-    model = Viagem
-    template_name = 'viagem_confirm_delete.html'
-    success_url = reverse_lazy('viagem_list')
-    login_url = 'login'
+@login_required
+def viagem_update(request, viagem_id):
+    viagem = get_object_or_404(Viagem, pk=viagem_id)
+    if request.method == "POST":
+        form = ViagemForm(request.POST, instance=viagem)
+        if form.is_valid():
+            form.save()
+            return redirect('viagem_list')
+    else:
+        form = ViagemForm(instance=viagem)
+    return render(request, "viagem_form.html", {"form": form})
+
+@login_required
+def viagem_delete(request, viagem_id):
+    viagem = get_object_or_404(Viagem, pk=viagem_id)
+    if request.method == "POST":
+        viagem.delete()
+        return redirect('viagem_list')
+    return render(request, "viagem_confirm_delete.html", {"viagem": viagem})
 
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Faz login automaticamente após o registro
-            return redirect('viagem_list')  # Redireciona para a lista de viagens
-        else:
-            messages.error(request, "Erro ao cadastrar. Verifique os campos.")
+            login(request, user)
+            return redirect('viagem_list')
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('viagem_list')  # Redireciona para a página de lista de viagens
+        else:
+            return render(request, 'login.html', {'error': 'Usuário ou senha inválidos.'})
+    
+    return render(request, 'login.html')
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')  # Redireciona para a página de login após o logout
