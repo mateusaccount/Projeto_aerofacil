@@ -1,18 +1,22 @@
 from django.urls import path
-from . import views
+from .views import (
+    login_view, logout_view, signup,
+    viagem_list, viagem_create, viagem_detail, viagem_update, viagem_delete, base
+)
 
 urlpatterns = [
+    path('', base, name='base'), 
     # Login e Logout
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
 
-    # Cadastro
-    path('signup/', views.signup, name='signup'),
+    # Cadastro de usuários
+    path('signup/', signup, name='signup'),
 
     # CRUD das Viagens
-    path('', views.login_view, name='login'),
-    path('viagem/<int:viagem_id>/', views.viagem_detail, name='viagem_detail'),
-    path('viagem/criar/', views.viagem_create, name='viagem_create'),
-    path('viagem/<int:viagem_id>/editar/', views.viagem_update, name='viagem_update'),
-    path('viagem/<int:viagem_id>/deletar/', views.viagem_delete, name='viagem_delete'),
+    path('viagem/', viagem_list, name='viagem_list'),
+    path('viagem/nova/', viagem_create, name='viagem_create'),
+    path('viagem/<int:pk>/', viagem_detail, name='viagem_detail'),
+    path('viagem/<int:pk>/editar/', viagem_update, name='viagem_update'),
+    path('viagem/<int:pk>/deletar/', viagem_delete, name='viagem_delete'),
 ]

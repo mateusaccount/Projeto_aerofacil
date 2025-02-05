@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo à nossa plataforma!</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="container mt-5">
+
+    <div class="card shadow-sm p-4">
+        <h1 class="text-center">Bem-vindo à nossa plataforma de Viagens!</h1>
+
+        <div class="text-center mb-4">
+            <p>Aqui você pode gerenciar suas viagens com facilidade.</p>
+            <a href="{% url 'viagem_list' %}" class="btn btn-primary">Ver Lista de Viagens</a>
+            <a href="{% url 'viagem_create' %}" class="btn btn-success">+ Nova Viagem</a>
+        </div>
+
+        <div class="text-center mb-4">
+            <!-- Verifica se o usuário está autenticado -->
+            {% if user.is_authenticated %}
+                <p>Olá, {{ user.username }}!</p>
+                <a href="{% url 'logout' %}" class="btn btn-danger">Sair</a>  <!-- Botão de Logout -->
+            {% else %}
+                <!-- Botões de Login e Registro, apenas se o usuário não estiver logado -->
+                <a href="{% url 'login' %}" class="btn btn-info">Login</a>
+                <a href="{% url 'signup' %}" class="btn btn-warning">Registrar</a>
+            {% endif %}
+        </div>
+
+        <footer class="text-center mt-5">
+            <p>&copy; 2025 - AeroFacil</p>
+        </footer>
+    </div>
+
+</body>
+</html>
