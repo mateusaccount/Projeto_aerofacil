@@ -6,7 +6,7 @@ from .models import Viagem
 class ViagemForm(forms.ModelForm):
     class Meta:
         model = Viagem
-        fields = ['origem', 'destino', 'data_viagem', 'descricao']
+        fields = ['piloto','origem', 'destino', 'data_viagem', 'descricao']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
