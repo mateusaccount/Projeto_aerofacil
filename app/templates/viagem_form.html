@@ -1,6 +1,6 @@
 {% load static %}
+{% load crispy_forms_filters %}
 
-<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
 <body class="container mt-5">
     <div class="card shadow-sm p-4">
         <h2 class="text-center">{% if object %}Editar{% else %}Nova{% endif %} Viagem</h2>
-
+        
         <form method="post">
             {% csrf_token %}
             <div class="mb-3">
