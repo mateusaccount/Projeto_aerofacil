@@ -34,7 +34,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('viagem_list')
+            return redirect('base')
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
