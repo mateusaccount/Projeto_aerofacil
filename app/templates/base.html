@@ -1,17 +1,54 @@
 {% load static %}
 {% load crispy_forms_filters %}
 
-<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bem-vindo à nossa plataforma!</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Posicionamento da logo */
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 15px;
+            background: transparent;
+        }
+        
+        /* Animação suave com transition */
+        .navbar-brand img {
+            max-height: 150px;
+            transform: scale(0.8); /* Começa menor */
+            opacity: 0;
+            transition: transform 1s ease-out, opacity 1s ease-out;
+        }
+
+        /* Assim que a página carregar, aplica o efeito */
+        .navbar-brand img.loaded {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* Efeito ao passar o mouse */
+        .navbar-brand img:hover {
+            transform: scale(1.1);
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
 </head>
 <body class="container mt-5">
 
-    <div class="card shadow-sm p-4">
+    <!-- Navbar com animação na logo -->
+    <nav class="navbar">
+        <a class="navbar-brand" href="{% url 'base' %}">
+            <img id="logo" src="{% static 'images/logo.png' %}" alt="AeroFácil">
+        </a>
+    </nav>
+
+    <div class="card shadow-sm p-4 mt-5">
         <h1 class="text-center">Bem-vindo à nossa plataforma de Viagens!</h1>
 
         <div class="text-center mb-4">
@@ -21,12 +58,10 @@
         </div>
 
         <div class="text-center mb-4">
-            <!-- Verifica se o usuário está autenticado -->
             {% if user.is_authenticated %}
                 <p>Olá, {{ user.username }}!</p>
-                <a href="{% url 'logout' %}" class="btn btn-danger">Sair</a>  <!-- Botão de Logout -->
+                <a href="{% url 'logout' %}" class="btn btn-danger">Sair</a>
             {% else %}
-                <!-- Botões de Login e Registro, apenas se o usuário não estiver logado -->
                 <a href="{% url 'login' %}" class="btn btn-info">Login</a>
                 <a href="{% url 'signup' %}" class="btn btn-warning">Registrar</a>
             {% endif %}
@@ -36,6 +71,13 @@
             <p>&copy; 2025 - AeroFacil</p>
         </footer>
     </div>
+
+    <script>
+        // Aguarda o carregamento da página para aplicar a classe "loaded"
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("logo").classList.add("loaded");
+        });
+    </script>
 
 </body>
 </html>
