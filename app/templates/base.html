@@ -8,7 +8,6 @@
     <title>Bem-vindo à nossa plataforma!</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Posicionamento da logo */
         .navbar {
             position: absolute;
             top: 0;
@@ -17,31 +16,33 @@
             padding: 10px 15px;
             background: transparent;
         }
-        
-        /* Animação suave com transition */
+
         .navbar-brand img {
             max-height: 150px;
-            transform: scale(0.8); /* Começa menor */
+            transform: scale(0.8);
             opacity: 0;
             transition: transform 1s ease-out, opacity 1s ease-out;
         }
 
-        /* Assim que a página carregar, aplica o efeito */
         .navbar-brand img.loaded {
             transform: scale(1);
             opacity: 1;
         }
 
-        /* Efeito ao passar o mouse */
         .navbar-brand img:hover {
             transform: scale(1.1);
             transition: transform 0.3s ease-in-out;
+        }
+
+        footer {
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: white;
         }
     </style>
 </head>
 <body class="container mt-5">
 
-    <!-- Navbar com animação na logo -->
     <nav class="navbar">
         <a class="navbar-brand" href="{% url 'base' %}">
             <img id="logo" src="{% static 'images/logo.png' %}" alt="AeroFácil">
@@ -73,7 +74,6 @@
     </div>
 
     <script>
-        // Aguarda o carregamento da página para aplicar a classe "loaded"
         document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("logo").classList.add("loaded");
         });
